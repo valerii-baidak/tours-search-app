@@ -1,73 +1,55 @@
-# React + TypeScript + Vite
+# 🧳 Tours Search — React Test Assignment
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A client-side application for tour search with asynchronous results fetching, data caching, and race condition protection.
 
-Currently, two official plugins are available:
+## 🚀 Live Demo
+👉 https://tours-search-app.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🧱 Architecture
 
-## React Compiler
+The application is built with clear separation of concerns:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+UI → Hooks → Services → API
 
-## Expanding the ESLint configuration
+- **UI** — rendering only
+- **Hooks** — feature logic
+- **Services** — business logic (polling, cancel, cache)
+- **API** — interaction with mock data
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## ✨ Functionality
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Destination Search
+- autocomplete (countries / cities / hotels)
+- debounce (250ms)
+- keyboard navigation
+- race condition protection
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Tours Search
+- async lifecycle (start → polling → result)
+- retry on errors
+- active search cancellation
+- hotel caching
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### UI
+- loading / error / empty states
+- responsive grid (2 → 1 cards)
+- CSS Modules
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## ⚡ Performance
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+The project uses **React Compiler (experimental)** to automatically optimize rendering and reduce the need for manual memoization.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## ⚙️ Tech Stack
+
+- React
+- TypeScript
+- CSS Modules
+- React Compiler (experimental)
+- Custom hooks
+- Mock API
+
+## ▶️ Run locally
+
+```bash
+npm install
+npm run dev
