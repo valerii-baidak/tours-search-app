@@ -1,6 +1,6 @@
 import type { ApiError, GeoItem } from '../../../mock/api';
 import type { SearchPricesResponse } from '../../../mock/api';
-import { startPricesSearch, fetchSearchPrices } from '../services/searchService';
+import { startPricesSearch, fetchSearchPrices, cancelSearchPrices } from '../services/searchService';
 
 export const getTypeIcon = (type: GeoItem['type']) => {
   if (type === 'hotel') return '🏨';
@@ -59,6 +59,14 @@ export const pollSearchPrices = async (
   signal: AbortSignal,
 ): Promise<SearchPricesResponse | undefined> => {
   const { token, waitUntil } = await startPricesSearch(countryId);
+
+  signal.addEventListener(
+    'abort',
+    () => {
+      cancelSearchPrices(token);
+    },
+    { once: true },
+  );
 
   let retriesLeft = 2;
   let nextWaitUntil = waitUntil;

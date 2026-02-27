@@ -17,7 +17,7 @@ const App = () => {
 
   return (
     <div>
-      <SearchForm onSubmit={handleSubmit} />
+      <SearchForm onSubmit={handleSubmit} isSearching={status === 'loading'} />
       {status === 'idle' && <Message>Оберіть напрямок і натисніть «Знайти»</Message>}
       {status === 'loading' && <Message>Завантаження…</Message>}
       {status === 'error' && <Message isError>{error ?? 'Сталася помилка під час пошуку'}</Message>}

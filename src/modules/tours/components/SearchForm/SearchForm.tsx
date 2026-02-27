@@ -1,4 +1,4 @@
-import { type ChangeEvent, type SubmitEvent, useRef, useState } from 'react';
+import { type ChangeEvent, type SubmitEvent, useEffect, useRef, useState } from 'react';
 
 import { type GeoItem } from '../../../../mock/api';
 import DestinationInput from '../DestinationInput';
@@ -9,11 +9,13 @@ import styles from './SearchForm.module.css';
 
 type Props = {
   onSubmit: (selected: GeoItem) => void;
+  isSearching?: boolean;
 };
 
-export const SearchForm = ({ onSubmit }: Props) => {
+export const SearchForm = ({ onSubmit, isSearching = false }: Props) => {
   const formRef = useRef<HTMLFormElement>(null);
   const [selected, setSelected] = useState<GeoItem | null>(null);
+  const [isButtonLoading, setIsButtonLoading] = useState(isSearching);
   const [value, setValue] = useState<string>('');
   const [mode, setMode] = useState<SearchInputModeType>(SearchInputMode.Countries);
   const { countries, geoResults, isCountriesLoading, isSearchLoading } = useGeoData(value);
@@ -37,6 +39,7 @@ export const SearchForm = ({ onSubmit }: Props) => {
     if (!selected) return;
 
     onSubmit(selected);
+    setIsButtonLoading(isSearching);
   };
 
   const handleClear = () => {
@@ -48,7 +51,12 @@ export const SearchForm = ({ onSubmit }: Props) => {
   const handleSelect = (item: GeoItem) => {
     setSelected(item);
     setValue(item.name);
+    setIsButtonLoading((loading) => (value !== item.name ? false : loading));
   };
+
+  useEffect(() => {
+    setIsButtonLoading(isSearching);
+  }, [isSearching]);
 
   const isLoading = mode === SearchInputMode.Countries ? isCountriesLoading : isSearchLoading;
 
@@ -66,8 +74,8 @@ export const SearchForm = ({ onSubmit }: Props) => {
       />
 
       <div className={styles.actions}>
-        <button className={styles.submit} type="submit" disabled={!selected}>
-          Знайти
+        <button className={styles.submit} type="submit" disabled={!selected || isButtonLoading}>
+          {isButtonLoading ? 'Пошук…' : 'Знайти'}
         </button>
       </div>
     </form>
