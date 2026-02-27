@@ -13,6 +13,7 @@
     "format:check": "prettier . --check"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-use": "^17.6.0"

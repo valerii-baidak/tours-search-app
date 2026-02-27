@@ -1,0 +1,12 @@
+.message {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 16px;
+    color: #6b7280;
+    font-size: 16px;
+    text-align: center;
+}
+
+.error {
+    color: #b91c1c;
+}

@@ -18,6 +18,26 @@ export const parseApiError = async (error: unknown): Promise<ApiError | null> =>
   }
 };
 
+export const keyBy = <T>(array: T[], key: keyof T | ((item: T) => string | number)): Record<string, T> =>
+  array?.reduce<Record<string, T>>((acc, item) => {
+    const property = typeof key === 'function' ? key(item) : item?.[key];
+
+    acc[String(property)] = item;
+
+    return acc;
+  }, {});
+
+export const formatDateUA = (isoDate: string): string => {
+  const date = new Date(isoDate);
+
+  return new Intl.DateTimeFormat('uk-UA', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  }).format(date);
+};
+
+export const formatUAH = (amount: number) => `${amount.toLocaleString('uk-UA')} грн`;
 
 const sleep = (ms: number, signal: AbortSignal) =>
   new Promise<void>((resolve) => {
@@ -34,14 +54,17 @@ const sleep = (ms: number, signal: AbortSignal) =>
 
 const msUntil = (iso: string) => Math.max(0, new Date(iso).getTime() - Date.now());
 
-export const pollSearchPrices = async (countryId: string, signal: AbortSignal): Promise<SearchPricesResponse | undefined> => {
+export const pollSearchPrices = async (
+  countryId: string,
+  signal: AbortSignal,
+): Promise<SearchPricesResponse | undefined> => {
   const { token, waitUntil } = await startPricesSearch(countryId);
 
   let retriesLeft = 2;
   let nextWaitUntil = waitUntil;
 
   while (true) {
-    if (signal.aborted) return
+    if (signal.aborted) return;
 
     await sleep(msUntil(nextWaitUntil), signal);
 
