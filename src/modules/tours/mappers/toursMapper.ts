@@ -1,5 +1,5 @@
 import type { Hotel, Price } from '../../../mock/api';
-import { formatDateUA, formatUAH, keyBy } from '../utils/utils';
+import { formatDateUA, formatUSD, keyBy } from '../utils/utils';
 import { getCountryById } from '../services/geoService.ts';
 
 export type TourCard = {
@@ -34,7 +34,7 @@ export const mapToTourCards = (prices: Price[], hotels: Hotel[]): TourCard[] => 
         cityName: hotel.cityName,
         startDate: formatDateUA(price.startDate),
         endDate: formatDateUA(price.endDate),
-        priceText: formatUAH(price.amount),
+        priceText: formatUSD(price.amount),
       };
     })
     .filter(Boolean) as TourCard[];

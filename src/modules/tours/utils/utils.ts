@@ -37,7 +37,12 @@ export const formatDateUA = (isoDate: string): string => {
   }).format(date);
 };
 
-export const formatUAH = (amount: number) => `${amount.toLocaleString('uk-UA')} грн`;
+export const formatUSD = (amount: number) =>
+  new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+  }).format(amount);
 
 const sleep = (ms: number, signal: AbortSignal) =>
   new Promise<void>((resolve) => {
